@@ -1,16 +1,18 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import socket from '../Util/SocketClient';
 import { withStyles } from 'material-ui/styles';
 import Grid from 'material-ui/Grid';
 import TextField from 'material-ui/TextField';
 import Icon from 'material-ui/Icon';
 import Button from 'material-ui/Button';
-import Message from './Message';
-import Timeline from './Timeline';
-import Transactions from './Transactions';
 import Card, { CardContent } from 'material-ui/Card';
 import Typography from 'material-ui/Typography';
+
+import socket from '../Util/SocketClient';
+import Expire from './Expire';
+import Timeline from './Timeline';
+import Transactions from './Transactions';
+
 
 const styles = theme => ({
     card: {
@@ -92,7 +94,8 @@ class Content extends Component {
     addServerMsg = (obj) => {
         const payload = {
             author: obj.author,
-            message: obj.nextMsg
+            message: obj.nextMsg,
+            wait:obj.wait
         };
 
         this.setState({
@@ -131,8 +134,9 @@ class Content extends Component {
     addClientMsg = (e) => {
         e.preventDefault();
         const action = this.state.action;
-        const msg = this.state.message;
-        if (action === 'STEP_1' || msg === 'CLEAR') {
+        let msg = this.state.message || '';
+
+        if (action === 'STEP_1' || msg.toUpperCase() === 'CLEAR') {
             this.setState({
                 showTimeline: false,
                 timelineEvents: initTimeline()
@@ -168,7 +172,7 @@ class Content extends Component {
             <div>
                 <form className={classes.form} onSubmit={this.addClientMsg}>
                     <Grid container alignItems="center" justify="center">
-                        <Grid item xs={12} sm={7}>
+                        <Grid item xs={12} sm={10}>
                             <TextField
                                 placeholder="Type and hit enter to send message to BOT"
                                 fullWidth
@@ -188,11 +192,11 @@ class Content extends Component {
                     <Grid item xs={12} sm={6}>
                         <Card className={classes.card}>
                             <CardContent>
-                                <Typography gutterBottom variant="headline" component="h2">2.0</Typography>
+                                <Typography gutterBottom variant="headline" component="h2">2.0</Typography>                                
                                 <div className="chat-history" ref="chats">
                                     {
                                         chatHistory.map((obj, index) => (
-                                            <Message key={index} author={obj.author} message={obj.message} />
+                                            <Expire key={index} author={obj.author} message={obj.message} wait={obj.wait} />
                                         ))
                                     }
                                 </div>

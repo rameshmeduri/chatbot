@@ -44,7 +44,7 @@ class MenuAppBar extends React.Component {
     return (
       //["inherit","primary","secondary","default"]
       <div className={classes.root}>
-        <AppBar color="inherit" position="static">
+        <AppBar color="default" position="static">
           <Toolbar>
             <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
               <MenuIcon />

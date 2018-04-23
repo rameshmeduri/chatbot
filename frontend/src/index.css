@@ -1,7 +1,8 @@
 body {
     font-family: "Roboto", sans-serif;
     font-size: 14px;
-    color: #000;
+    color: #212529;
+    background-color: #f8f9fa;
 }
 
 /* chatbox */
@@ -12,7 +13,7 @@ body {
     overflow-y: auto;
     height: 300px;
     color: #fff;
-    border:1px solid #eee;
+    border: 1px solid #eee;
 }
 
 .message {
@@ -52,7 +53,7 @@ blockquote {
 
 .message-right blockquote {
     background-color: #4285F4;
-    margin-left: 1em;    
+    margin-left: 1em;
 }
 
 .message-right blockquote::before {
@@ -71,27 +72,99 @@ blockquote {
     margin-right: 1em;
 }
 
+/* Typing indicator */
+
+.typing-indicator {
+    background-color: #E6E7ED;
+    will-change: transform;
+    width: auto;
+    border-radius: 50px;
+    padding: 10px;
+    display: table;
+    margin-left: 10px;
+    animation: 2s bulge infinite ease-out;
+}
+
+.typing-indicator::before,
+.typing-indicator::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: -2px;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    background-color: #E6E7ED;
+}
+
+.typing-indicator::after {
+    height: 10px;
+    width: 10px;
+    left: -10px;
+    bottom: -10px;
+}
+
+.typing-indicator span {
+    height: 5px;
+    width: 5px;
+    float: left;
+    margin: 0 1px;
+    background-color: #9E9EA1;
+    display: block;
+    border-radius: 50%;
+    opacity: 0.4;
+}
+
+.typing-indicator span:nth-of-type(1) {
+    animation: 1s blink infinite 0.3333s;
+}
+
+.typing-indicator span:nth-of-type(2) {
+    animation: 1s blink infinite 0.6666s;
+}
+
+.typing-indicator span:nth-of-type(3) {
+    animation: 1s blink infinite 0.9999s;
+}
+
+@keyframes blink {
+    50% {
+        opacity: 1;
+    }
+}
+
+@keyframes bulge {
+    50% {
+        transform: scale(1.05);
+    }
+}
+
 /* Timeline */
 
-.ant-timeline {
+.timeline_container {
+    margin: 30px 0 0 0;
+    padding-left: 20px;
+}
+
+.timeline {
     box-sizing: border-box;
     padding: 0;
     line-height: 1.5;
 }
 
-.ant-timeline,
-.ant-timeline-item {
+.timeline,
+.timeline-item {
     font-size: 14px;
     list-style: none;
     margin: 0
 }
 
-.ant-timeline-item {
+.timeline-item {
     position: relative;
     padding: 0 0 20px
 }
 
-.ant-timeline-item-tail {
+.timeline-item-tail {
     position: absolute;
     left: 6px;
     top: .75em;
@@ -99,17 +172,17 @@ blockquote {
     border-left: 2px solid #e8e8e8
 }
 
-.ant-timeline-item-pending .ant-timeline-item-head {
+.timeline-item-pending .timeline-item-head {
     font-size: 12px
 }
 
-.ant-timeline-item-pending .ant-timeline-item-tail {
+.timeline-item-pending .timeline-item-tail {
     display: none
 }
 
-.ant-timeline-item-head {
+.timeline-item-head {
     position: absolute;
-    top:-4px;
+    top: -4px;
     width: 10px;
     height: 10px;
     background-color: #fff;
@@ -117,22 +190,22 @@ blockquote {
     border: 2px solid transparent
 }
 
-.ant-timeline-item-head-blue {
+.timeline-item-head-blue {
     border-color: #1890ff;
     color: #1890ff
 }
 
-.ant-timeline-item-head-gray {
+.timeline-item-head-gray {
     border-color: #999;
     color: #999;
 }
 
-.ant-timeline-item-head-green {
+.timeline-item-head-green {
     border-color: #52c41a;
     color: #52c41a
 }
 
-.ant-timeline-item-head-custom {
+.timeline-item-head-custom {
     position: absolute;
     text-align: center;
     line-height: 1;
@@ -147,21 +220,31 @@ blockquote {
     width: auto
 }
 
-.ant-timeline-item-content {
-    padding: 0 0 0 18px;
+.timeline-item-content {
+    padding: 0 0 0 25px;
     position: relative;
     top: -6px
 }
 
-.ant-timeline-item-last .ant-timeline-item-tail {
+.timeline-item-last .timeline-item-tail {
     border-left: 2px dotted #e8e8e8;
     display: none
 }
 
-.ant-timeline-item-last .ant-timeline-item-content {
+.timeline-item-last .timeline-item-content {
     min-height: 48px
 }
 
-.ant-timeline.ant-timeline-pending .ant-timeline-item-last .ant-timeline-item-tail {
+.timeline.timeline-pending .timeline-item-last .timeline-item-tail {
     display: block
+}
+
+.footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50px;
+    color: #a1a1a1;
+    margin: 50px 5px 0;
+    box-shadow: 0 -1px 4px 0 rgba(0, 0, 0, .15);
 }
