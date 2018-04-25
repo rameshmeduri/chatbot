@@ -7,11 +7,11 @@ import Icon from 'material-ui/Icon';
 import Button from 'material-ui/Button';
 import Card, { CardContent } from 'material-ui/Card';
 import Typography from 'material-ui/Typography';
-
 import socket from '../Util/SocketClient';
-import Expire from './Expire';
+import Message from './Message';
 import Timeline from './Timeline';
 import Transactions from './Transactions';
+
 
 
 const styles = theme => ({
@@ -79,6 +79,7 @@ class Content extends Component {
         super(props);
         this.state = {
             showTimeline: false,
+            showUpdates: false,
             action: 'START',
             message: '',
             chatHistory: [],
@@ -95,7 +96,7 @@ class Content extends Component {
         const payload = {
             author: obj.author,
             message: obj.nextMsg,
-            wait:obj.wait
+            wait: obj.wait
         };
 
         this.setState({
@@ -114,10 +115,9 @@ class Content extends Component {
             if (obj.nextAction === 'END') {
                 let lastItem = newArr[newArr.length - 1];
                 lastItem.completed = true;
-                lastItem.desc = `Ticket ${obj.nextMsg} Created`;
+                lastItem.desc = obj.nextMsg;
                 let newTrArr = this.state.transactions.concat(obj.nextMsg);
-                console.log(newTrArr);
-                this.setState({ action: 'START', transactions: newTrArr });
+                this.setState({ action: 'START', transactions: newTrArr, showUpdates: true });
             }
 
             this.setState({
@@ -125,6 +125,7 @@ class Content extends Component {
                 timelineEvents: newArr
             });
         }
+        setTimeout(() => { this.scrollToBot() }, 1200);
     }
 
     onChange = (e) => {
@@ -136,9 +137,10 @@ class Content extends Component {
         const action = this.state.action;
         let msg = this.state.message || '';
 
-        if (action === 'STEP_1' || msg.toUpperCase() === 'CLEAR') {
+        if (action === 'STEP_1' || msg === 'C') {
             this.setState({
                 showTimeline: false,
+                showUpdates: false,
                 timelineEvents: initTimeline()
             });
         }
@@ -167,7 +169,8 @@ class Content extends Component {
 
     render() {
         const { classes } = this.props;
-        const { chatHistory, showTimeline, timelineEvents, transactions } = this.state;
+        const { chatHistory, showTimeline, showUpdates, timelineEvents, transactions } = this.state;
+        console.log(showUpdates);
         return (
             <div>
                 <form className={classes.form} onSubmit={this.addClientMsg}>
@@ -189,21 +192,21 @@ class Content extends Component {
                     </Grid>
                 </form>
                 <Grid container>
-                    <Grid item xs={12} sm={6}>
+                    <Grid item xs={12} sm={4}>
                         <Card className={classes.card}>
                             <CardContent>
-                                <Typography gutterBottom variant="headline" component="h2">2.0</Typography>                                
+                                <Typography gutterBottom variant="headline" component="h2">2.0</Typography>
                                 <div className="chat-history" ref="chats">
                                     {
                                         chatHistory.map((obj, index) => (
-                                            <Expire key={index} author={obj.author} message={obj.message} wait={obj.wait} />
+                                            <Message key={index} author={obj.author} message={obj.message} wait={obj.wait} />
                                         ))
                                     }
                                 </div>
                             </CardContent>
                         </Card>
                     </Grid>
-                    <Grid item xs={12} sm={6}>
+                    <Grid item xs={12} sm={4}>
                         <Card className={classes.card}>
                             <CardContent>
                                 <Typography gutterBottom variant="headline" component="h2">Ticket</Typography>
@@ -211,11 +214,13 @@ class Content extends Component {
                             </CardContent>
                         </Card>
                     </Grid>
+                </Grid>
+                <Grid container>
                     <Grid item xs={12} sm={6}>
                         <Card className={classes.card}>
                             <CardContent>
-                                <Typography gutterBottom variant="headline" component="h2">Recent Transactions</Typography>
-                                <Transactions data={transactions} show={showTimeline} />
+                                <Typography gutterBottom variant="headline" component="h2">Recent Updates</Typography>
+                                <Transactions data={transactions} show={showUpdates} />
                             </CardContent>
                         </Card>
                     </Grid>
@@ -223,9 +228,6 @@ class Content extends Component {
                         <Card className={classes.card}>
                             <CardContent>
                                 <Typography gutterBottom variant="headline" component="h2">Product Info</Typography>
-                                <Typography component="p">
-
-                                </Typography>
                             </CardContent>
                         </Card>
                     </Grid>
