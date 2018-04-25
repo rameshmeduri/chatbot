@@ -52,7 +52,6 @@ io.on('connection', (client) => {
                     break;
 
                 case 'STEP_1':
-                    nextObj = { nextAction: 'STEP_2', nextMsg: 'ISIN', timelineMsg: clientMsg, timelineStep: 'STEP_1', author, wait: true };
                     nextObj = { nextAction: 'STEP_2', nextMsg: 'ISIN', timelineMsg: (clientMsg === 'B') ? 'BUY' : 'SELL', timelineStep: 'STEP_1', author, wait: true };
                     break;
 
