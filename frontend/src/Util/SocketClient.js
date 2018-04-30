@@ -1,21 +1,19 @@
 import io from 'socket.io-client';
-const socket_server = process.env.REACT_APP_SOCKET_SERVER;
-console.log('socket_server' , socket_server);
-const socket = io(socket_server);
-export default socket;
 
+const env = process.env.REACT_APP_ENV;
+
+console.log(`Front End ENV :: ${env}`);
+
+let socket;
+
+if (env === 'production') {
+    socket = io();
+} else {
+    socket = io('http://localhost:8080/');
+}
 
 socket.on('connection', () => {
-    console.log('Socket Connected');
+    console.log('Socket Server Connected');
 });
 
-/*
-socket.on('from_bot', (message) => {
-    console.log('recive message:', message);
-    messageStore.addMessage(message);
-});
-
-const sendMessage = (content) => {
-    socket.emit('from_user', content);
-}
-*/
+export default socket;

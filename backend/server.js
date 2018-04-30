@@ -9,7 +9,7 @@ const port = process.env.PORT;
 const env = process.env.NODE_ENV;
 
 
-if (env === 'PRODUCTION') {
+if (env === 'production') {
     const staticPath = path.resolve(__dirname, '../frontend/build');
     app.use(express.static(staticPath));
     app.get('*', (req, res) => {

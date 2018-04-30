@@ -169,8 +169,7 @@ class Content extends Component {
 
     render() {
         const { classes } = this.props;
-        const { chatHistory, showTimeline, showUpdates, timelineEvents, transactions } = this.state;
-        console.log(showUpdates);
+        const { chatHistory, showTimeline, showUpdates, timelineEvents, transactions } = this.state;        
         return (
             <div>
                 <form className={classes.form} onSubmit={this.addClientMsg}>
